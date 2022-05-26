@@ -1,19 +1,22 @@
 const main = async () => {
   const [owner, randomPerson] = await hre.ethers.getSigners();
-  const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
-  const waveContract = await waveContractFactory.deploy();
-  await waveContract.deployed();
+  const giftContractFactory = await hre.ethers.getContractFactory("GiftPortal");
+  const giftContract = await giftContractFactory.deploy();
+  await giftContract.deployed();
 
-  console.log("Contract deployed to:", waveContract.address);
+  console.log("Contract deployed to:", giftContract.address);
   console.log("Contract deployed by:", owner.address);
 
-  let waveCount;
-  waveCount = await waveContract.getTotalWaves();
+  let giftCount;
+  giftCount = await giftContract.getTotalGift();
 
-  let waveTxn = await waveContract.wave();
-  await waveTxn.wait();
+  let giftTxn = await giftContract.gift();
+  await giftTxn.wait();
 
-  waveCount = await waveContract.getTotalWaves();
+  giftCount = await giftContract.getTotalGift();
+  giftTxn = await giftContract.connect(randomPerson).gift();
+  await giftTxn.wait();
+  giftCount = await giftContract.getTotalGift();
 };
 
 const runMain = async () => {
